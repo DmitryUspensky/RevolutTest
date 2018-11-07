@@ -20,6 +20,6 @@ class AdapterDiffUtil(
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         val oldItem = oldList[oldItemPosition]
         val newItem = newList[newItemPosition]
-        return (oldItem.price == newItem.price) || oldItem.isSelected
+        return (oldItem.price == newItem.price && oldItem.type != newItem.type) || oldItem.isSelected
     }
 }

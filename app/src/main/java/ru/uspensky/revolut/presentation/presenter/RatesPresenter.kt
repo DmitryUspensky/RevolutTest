@@ -79,7 +79,9 @@ class RatesPresenter @Inject constructor(
                 .subscribe ({ result ->
                     disposableTimer?.dispose()
                     val ticker = Ticker.valueOf(result.first.base)
-                    viewState.showRates(getDataForAdapter(result.first.rates, ticker, result.second), ticker, true)
+                    if (ticker == lastTicker) {
+                        viewState.showRates(getDataForAdapter(result.first.rates, ticker, result.second), ticker, true)
+                    }
                     registerTimer()
                 }, {viewState.showNetworkError()})
     }
