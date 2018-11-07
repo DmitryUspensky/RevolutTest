@@ -60,11 +60,20 @@ class RatesActivity : MvpAppCompatActivity(), IRatesView, ITickerSelected {
         coordinatorLayout = findViewById(R.id.coord)
         emptyMessage = findViewById(R.id.emptyMessage)
         ratesList?.layoutManager = LinearLayoutManager(this)
+    }
 
+    override fun onResume() {
+        super.onResume()
         val filter = IntentFilter()
         filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION)
         registerReceiver(connectivityStatusReceiver, filter)
         connectivityStatusReceiver.registerListener(presenter)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        connectivityStatusReceiver.unRegisterListener(presenter)
+        this.unregisterReceiver(connectivityStatusReceiver)
     }
 
     override fun showRates(data: List<RatesAdapter.ItemData>, ticker: Ticker, onDemand: Boolean) {
@@ -102,7 +111,6 @@ class RatesActivity : MvpAppCompatActivity(), IRatesView, ITickerSelected {
 
     override fun onDestroy() {
         super.onDestroy()
-        connectivityStatusReceiver.unRegisterListener(presenter)
         clearInjector()
     }
 
